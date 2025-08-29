@@ -152,6 +152,17 @@ button:focus, input:focus, select:focus, textarea:focus{
     border-radius:.5rem;
 }
 
+/* NEW: Style for adding an icon to the search input */
+.search-container { position: relative; }
+.search-icon {
+    position: absolute;
+    left: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94a3b8; /* Tailwind slate-400 */
+}
+#searchBox { padding-left: 2.5rem; }
+
 /* ============ Utilities ============ */
 .text-danger{ color: var(--vos-danger); }
 .bg-danger{ background: var(--vos-danger); color:#fff; }
