@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Users and Employees Manager</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="vos.css" />
+    <style> body { font-family: 'Inter', system-ui, sans-serif; } </style>
+</head>
+<body class="text-gray-800">
+
+<header class="vos-header">
+    <div class="vos-header-inner">
+        <div class="vos-brand text-lg">VERTEX</div>
+        <button id="logoutBtn" class="vos-btn-secondary">Logout</button>
+    </div>
+</header>
+
+<main class="mx-auto max-w-6xl px-4 py-8">
+    <section class="space-y-6">
+        <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+                <h2 class="text-2xl font-bold">All Users / Employees</h2>
+                <p class="text-slate-600">Data source is local API</p>
+            </div>
+            <div class="flex flex-col sm:flex-row items-center gap-4">
+                <!-- ADDED: Checkbox filters -->
+                <div class="flex items-center gap-4">
+                    <label class="flex items-center gap-2 text-sm cursor-pointer">
+                        <input type="checkbox" id="withEmailCheckbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                        With Email
+                    </label>
+                    <label class="flex items-center gap-2 text-sm cursor-pointer">
+                        <input type="checkbox" id="withoutEmailCheckbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                        Without Email
+                    </label>
+                </div>
+                <div class="flex items-center gap-3">
+                    <input id="searchBox" class="input sm:w-64 w-full" type="search" placeholder="Search by name, email..." />
+                    <select id="pageSize" class="input w-28">
+                        <option value="10">10 / page</option>
+                        <option value="25">25 / page</option>
+                        <option value="50">50 / page</option>
+                        <option value="100">100 / page</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="vos-card overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="vos-table w-full">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Fullname</th>
+                        <th>Email</th>
+                        <th>Department</th>
+                    </tr>
+                    </thead>
+                    <tbody id="usersTbody">
+                    <!-- JS will populate this -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="flex items-center justify-between gap-4 border-t p-4">
+                <p id="resultInfo" class="text-sm text-slate-600">—</p>
+                <div class="flex items-center gap-2">
+                    <button id="prevBtn" class="vos-btn" disabled>Prev</button>
+                    <span id="pageIndicator" class="text-sm font-semibold tabular-nums">1 / 1</span>
+                    <button id="nextBtn" class="vos-btn" disabled>Next</button>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>
+
