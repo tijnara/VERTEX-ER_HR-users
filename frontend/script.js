@@ -1,7 +1,79 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // API endpoints
-    const USERS_API_URL = 'http://192.168.1.49:8080/api/users';
-    const DEPARTMENTS_API_URL = 'http://192.168.1.49:8080/api/departments';
+    // If opened via WebStorm static server (63342), redirect to backend origin (3002) to avoid CORS and allow cookies
+    if (window.location.port === '63342') {
+        const file = window.location.pathname.split('/').pop() || 'index.html';
+        window.location.href = `http://localhost:3002/${file}`;
+        return;
+    }
+    // API endpoints: pick same-origin by default, but if served from file://, target backend at localhost:3002
+    const isWebStormStatic = false;
+    const isFileProtocol = window.location.protocol === 'file:';
+    const API_BASE = isFileProtocol ? 'http://localhost:3002' : '';
+    const USERS_API_URL = `${API_BASE}/api/users`;
+    const DEPARTMENTS_API_URL = `${API_BASE}/api/departments`;
+    const LOGIN_URL = `${API_BASE}/api/login`;
+    const AUTH_CURRENT_URL = `${API_BASE}/api/auth/current-login`;
+
+    // --- Expose helpers needed by JavaFX WebView injector ---
+    const attemptLogin = async (email, password) => {
+        try {
+            console.log('[SPA] Attempting login to', LOGIN_URL);
+            const r = await fetch(LOGIN_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                body: JSON.stringify({ email, password })
+            });
+            const data = await r.json().catch(() => ({}));
+            console.log('[SPA] /api/login status', r.status, data);
+            if (r.ok && (data?.ok === true || data?.user)) {
+                sessionStorage.setItem('isLoggedIn', 'true');
+                window.location.href = 'userlist.html';
+                return true;
+            }
+            return false;
+        } catch (e) {
+            console.error('[SPA] Login error', e);
+            return false;
+        }
+    };
+
+    const fetchCurrentLogin = async (force = false) => {
+        try {
+            const r = await fetch(AUTH_CURRENT_URL, { credentials: 'include' });
+            const data = await r.json().catch(() => ({}));
+            console.log('[SPA] current-login status', r.status, data);
+            if (r.ok && (data?.ok === true || data?.user)) {
+                sessionStorage.setItem('isLoggedIn', 'true');
+                // If on login page, redirect to list
+                if (document.getElementById('loginForm')) {
+                    window.location.href = 'userlist.html';
+                }
+                return data;
+            }
+        } catch (e) {
+            console.warn('[SPA] current-login failed', e);
+        }
+        return null;
+    };
+
+    window.fetchCurrentLogin = fetchCurrentLogin;
+    window.autoLogin = (email, password) => attemptLogin(email, password);
+
+    window.addEventListener('VOS_FETCH_CURRENT_LOGIN', () => fetchCurrentLogin(true));
+    window.addEventListener('VOS_CREDENTIALS', (e) => {
+        try {
+            const detail = e?.detail || {};
+            const email = detail.email || detail.username || detail.user_email;
+            const password = detail.password || detail.user_password;
+            const form = document.getElementById('loginForm');
+            if (form) {
+                if (email) form.email.value = email;
+                if (password) form.password.value = password;
+            }
+            if (email && password) attemptLogin(email, password);
+        } catch (_) {}
+    });
 
     /**
      * Handles logic for the LOGIN PAGE (index.html)
@@ -12,6 +84,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (!loginForm) return;
 
+        // Attempt to auto-redirect if a valid session cookie already exists
+        fetchCurrentLogin(true);
+
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             if (errorMessage) errorMessage.textContent = '';
@@ -19,23 +94,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const email = loginForm.email.value;
             const password = loginForm.password.value;
 
-            try {
-                const response = await fetch(USERS_API_URL);
-                if (!response.ok) throw new Error('Network response was not ok.');
-                const users = await response.json();
-                const authenticatedUser = users.find(
-                    (user) => user.email === email && user.password === password
-                );
-
-                if (authenticatedUser) {
-                    sessionStorage.setItem('isLoggedIn', 'true');
-                    window.location.href = 'userlist.html';
-                } else {
-                    if (errorMessage) errorMessage.textContent = 'Invalid email or password.';
-                }
-            } catch (error) {
-                console.error('Login failed:', error);
-                if (errorMessage) errorMessage.textContent = 'Login failed. Could not connect to the server.';
+            const ok = await attemptLogin(email, password);
+            if (!ok) {
+                if (errorMessage) errorMessage.textContent = 'Invalid email or password.';
             }
         });
     };
