@@ -2,9 +2,9 @@
   "name": "vertex-erp-backend",
   "version": "1.0.0",
   "description": "Backend server for the VERTEX ERP HR users application.",
-  "main": "server.js",
+  "main": "server_users.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "node server_users.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

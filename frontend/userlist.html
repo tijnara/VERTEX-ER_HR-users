@@ -82,7 +82,6 @@
         </div>
 
 
-        <!-- Users table -->
         <div>
             <table class="vos-table">
                 <thead>
@@ -115,99 +114,93 @@
     </div>
 </main>
 
-<!-- MODAL: Create New User / Profile -->
 <div id="newUserModal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center hidden">
     <div class="bg-white rounded-lg shadow-xl w-full max-w-5xl max-h-[90vh] flex flex-col">
         <div class="p-4 border-b">
             <h3 class="text-lg font-semibold">Register new employee</h3>
-            <p class="text-sm text-slate-500">Position</p>
         </div>
 
-        <!-- Main Tabs Navigation -->
-        <div class="border-b border-slate-200 px-4">
-            <nav class="flex space-x-2">
-                <button data-tab-target="#newUserInformation" class="main-tab-button active px-3 py-2 text-sm font-medium rounded-t-md">
-                    User Information
-                </button>
-                <button data-tab-target="#newUserAccess" class="main-tab-button px-3 py-2 text-sm font-medium rounded-t-md">
-                    User Access
-                </button>
-            </nav>
-        </div>
+        <div class="overflow-y-auto flex-grow p-6">
+            <form id="newUserForm">
+                <div class="grid grid-cols-1 md:grid-cols-6 gap-x-4 gap-y-5">
 
-        <!-- Tab Content Area -->
-        <div class="overflow-y-auto flex-grow">
-            <!-- User Information Tab -->
-            <div id="newUserInformation" class="main-tab-content p-6">
-                <form id="newUserForm" class="space-y-4">
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                        <!-- All form fields from before go here -->
-                        <div><label for="newFullName" class="label">Full Name</label><input type="text" id="newFullName" class="input" required></div>
-                        <div><label for="newEmail" class="label">Email</label><input type="email" id="newEmail" class="input"></div>
-                        <div><label for="newPassword" class="label">Password</label><input type="password" id="newPassword" class="input" required></div>
-                        <div><label for="newMobileNumber" class="label">Mobile Number</label><input type="text" id="newMobileNumber" class="input"></div>
-                        <div><label for="newDepartmentName" class="label">Department</label><select id="newDepartmentName" class="input" required><option value="">Loading...</option></select></div>
-                        <div><label for="newPosition" class="label">Position</label><input type="text" id="newPosition" class="input"></div>
-                        <div><label for="newBranchId" class="label">Branch ID (Optional)</label><input type="text" id="newBranchId" class="input"></div>
-                        <div><label for="newBranchName" class="label">Branch Name (Optional)</label><input type="text" id="newBranchName" class="input"></div>
-                        <div><label for="newOperationId" class="label">Operation ID (Optional)</label><input type="text" id="newOperationId" class="input"></div>
-                        <div><label for="newToken" class="label">Token (Optional)</label><input type="text" id="newToken" class="input"></div>
-                        <div class="flex items-center pt-6 sm:col-span-3"><label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" id="newIsActive" class="h-4 w-4 rounded" checked> Is Active</label></div>
+                    <div class="md:col-span-2">
+                        <label for="newFirstName" class="label">First Name</label>
+                        <input type="text" id="newFirstName" class="input" placeholder="First Name">
                     </div>
-                    <p id="newUserFormError" class="text-danger text-sm"></p>
-                </form>
-            </div>
+                    <div class="md:col-span-2">
+                        <label for="newMiddleName" class="label">Middle Name</label>
+                        <input type="text" id="newMiddleName" class="input" placeholder="Middle Name">
+                    </div>
+                    <div class="md:col-span-2">
+                        <label for="newLastName" class="label">Last Name</label>
+                        <input type="text" id="newLastName" class="input" placeholder="Last Name">
+                    </div>
 
-            <!-- User Access Tab -->
-            <div id="newUserAccess" class="main-tab-content hidden h-full">
-                <div class="flex h-full">
-                    <div class="border-r border-slate-200 p-2 w-40">
-                        <nav class="flex flex-col space-y-1">
-                            <button data-subtab-target="#newModuleAccess" class="sub-tab-button active w-full text-left text-sm p-2 rounded-md">Module Access</button>
-                            <button data-subtab-target="#newTaskbarAccess" class="sub-tab-button w-full text-left text-sm p-2 rounded-md">Taskbar Access</button>
-                        </nav>
+                    <div class="md:col-span-2">
+                        <label for="newProvince" class="label">Province</label>
+                        <select id="newProvince" class="input"></select>
                     </div>
-                    <div class="flex-grow p-4">
-                        <div id="newModuleAccess" class="sub-tab-content">
-                            <div class="grid grid-cols-2 gap-4 h-full">
-                                <div>
-                                    <h4 class="font-semibold mb-2">User Module Access</h4>
-                                    <input type="search" class="input w-full" placeholder="Search user modules...">
-                                    <div class="border rounded-md mt-2 h-80 overflow-y-auto p-2 text-sm text-slate-500">List of assigned modules...</div>
-                                </div>
-                                <div>
-                                    <h4 class="font-semibold mb-2">Modules Available</h4>
-                                    <input type="search" class="input w-full" placeholder="Search available modules...">
-                                    <div class="border rounded-md mt-2 h-80 overflow-y-auto p-2 text-sm text-slate-500">List of available modules...</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="newTaskbarAccess" class="sub-tab-content hidden">
-                            <div class="grid grid-cols-2 gap-4 h-full">
-                                <div>
-                                    <h4 class="font-semibold mb-2">User Taskbar Access</h4>
-                                    <div class="border rounded-md mt-2 h-80 overflow-y-auto p-2 text-sm text-slate-500">List of assigned taskbars...</div>
-                                </div>
-                                <div>
-                                    <h4 class="font-semibold mb-2">Taskbars Available</h4>
-                                    <div class="border rounded-md mt-2 h-80 overflow-y-auto p-2 text-sm text-slate-500">List of available taskbars...</div>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="md:col-span-2">
+                        <label for="newCity" class="label">City</label>
+                        <select id="newCity" class="input"></select>
+                    </div>
+                    <div class="md:col-span-2">
+                        <label for="newBarangay" class="label">Barangay</label>
+                        <select id="newBarangay" class="input"></select>
+                    </div>
+
+                    <div class="md:col-span-3">
+                        <label for="newContact" class="label">Contact</label>
+                        <input type="text" id="newContact" class="input" placeholder="Contact">
+                    </div>
+                    <div class="md:col-span-3">
+                        <label for="newEmail" class="label">E-mail</label>
+                        <input type="email" id="newEmail" class="input" placeholder="E-mail">
+                    </div>
+
+                    <div class="md:col-span-3">
+                        <label for="newDepartmentName" class="label">Department</label>
+                        <select id="newDepartmentName" class="input"></select>
+                    </div>
+                    <div class="md:col-span-3">
+                        <label for="newPosition" class="label">Position</label>
+                        <input type="text" id="newPosition" class="input" placeholder="Position">
+                    </div>
+
+                    <div class="md:col-span-2">
+                        <label for="newTin" class="label">TIN</label>
+                        <input type="text" id="newTin" class="input" placeholder="TIN">
+                    </div>
+                    <div class="md:col-span-2">
+                        <label for="newSss" class="label">SSS</label>
+                        <input type="text" id="newSss" class="input" placeholder="SSS">
+                    </div>
+                    <div class="md:col-span-2">
+                        <label for="newPhilhealth" class="label">PhilHealth</label>
+                        <input type="text" id="newPhilhealth" class="input" placeholder="PhilHealth">
+                    </div>
+
+                    <div class="md:col-span-3">
+                        <label for="newBirthday" class="label">Birthday</label>
+                        <input type="date" id="newBirthday" value="2025-09-05" class="input">
+                    </div>
+                    <div class="md:col-span-3">
+                        <label for="newDateHired" class="label">Date Hired</label>
+                        <input type="date" id="newDateHired" value="2025-09-05" class="input">
                     </div>
                 </div>
-            </div>
+                <p id="newUserFormError" class="text-danger text-sm mt-4"></p>
+            </form>
         </div>
 
-        <!-- Modal Footer -->
-        <div class="flex justify-end gap-3 p-4 border-t border-slate-200 bg-slate-50">
+        <div class="flex justify-start gap-3 p-4 border-t border-slate-200 bg-slate-50">
+            <button type="submit" form="newUserForm" class="vos-btn-primary">Confirm</button>
             <button type="button" id="cancelNewUserBtn" class="vos-btn">Cancel</button>
-            <button type="submit" form="newUserForm" class="vos-btn-primary">Save User</button>
         </div>
     </div>
 </div>
 
-<!-- MODAL: Edit User / Profile (structure matches the new user modal) -->
 <div id="editUserModal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center hidden">
     <div class="bg-white rounded-lg shadow-xl w-full max-w-5xl max-h-[90vh] flex flex-col">
         <div class="p-4 border-b">
@@ -225,7 +218,6 @@
                 <form id="editUserForm" class="space-y-4">
                     <input type="hidden" id="editUserId">
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                        <!-- All form fields go here -->
                         <div><label for="editFullName" class="label">Full Name</label><input type="text" id="editFullName" class="input" required></div>
                         <div><label for="editEmail" class="label">Email</label><input type="email" id="editEmail" class="input"></div>
                         <div><label for="editPassword" class="label">Password (leave blank)</label><input type="password" id="editPassword" class="input"></div>
